@@ -1,0 +1,73 @@
+<!doctype html>
+ 
+<html lang="en">
+ 
+<head>
+  <meta charset="utf-8">
+  <title>Trello</title>
+ 
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="style.css" />
+  <script type="text/javascript" charset="utf-8" src="trello.js"></script>
+  <script type="text/javascript" charset="utf-8" src="./card/card.component.js"></script>
+  <script type="text/javascript" charset="utf-8" src="./column.manager/column.manager.component.js"></script>
+  <script type="text/javascript" charset="utf-8" src="./card.column/card.column.component.js"></script>
+</head>
+ 
+<body>
+  <template id="card-component-template">
+    <link rel="stylesheet" href="./card/card.component.css" />
+    <div class="app-card__container">
+      <div class="app-card__title">
+        <p>New</p>
+      </div>
+      <div class="app-card__content">
+        <p>New</p>
+      </div>
+      <div class="app-card__actions">
+        <button class="app-card__delete">Delete</button>
+        <button class="app-card__modify">Modify</button>
+        <button class="app-card__save" disabled="true" >Save</button>
+      </div>
+    </div>
+  </template>
+ 
+  <template id="card-column-template">
+    <link rel="stylesheet" href="./card.column/card.column.component.css" />
+    <div class="card-column__container">
+      <div class="card-column__title"></div>
+      <div class="card-column__actions">
+        <button class="card-column__delete">Delete</button>
+        <button class="card-column__modify">Modify</button>
+        <button class="card-column__save" disabled="true" >Save</button>
+        <button class="card-column__newCard">New Card</button>
+      </div>
+    </div>
+  </template>
+ 
+  <template id="column-manager-template">
+      <link rel="stylesheet" href="./column.manager/column.manager.component.css" />
+      <div class="column-manager__container">
+        <div class="column-manager__search">
+          <p>Search: </p>
+          <input class="column-manager__filter" type="text">
+          <button class="column-manager__newColumn">Add Column</button>
+        </div>
+        <div class="column-manager__columns">
+        </div>
+      </div>
+  </template>
+ 
+  <div id="container">
+    <!-- <app-card>
+      <p slot="card-title" id="card-title-display">Title 1</p>
+      <p slot="card-content" id="card-content-display">Content 1</p>
+ 
+      <input class="app-card__input" id="card-title-input" type="text"></input>
+      <input class="app-card__input" id="card-content-input" type="text"></input>
+    </app-card> -->
+    <!-- <column-manager></column-manager> -->
+  </div>
+ 
+</body>
+</html>

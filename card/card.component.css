@@ -1,0 +1,60 @@
+.app-card__container{
+    box-shadow: 0 2px 1px -1px rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 1px 3px 0 rgba(0,0,0,.12);
+    transition: box-shadow 280ms cubic-bezier(.4,0,.2,1);
+    display: block;
+    position: relative;
+    padding: 16px;
+    border-radius: 4px;
+    font-family: Roboto,"Helvetica Neue",sans-serif;
+    color: rgba(0,0,0,.87);
+    cursor: pointer;
+    text-align: center
+}
+ 
+:host{
+    margin-bottom: 20px;
+}
+ 
+.app-card__title{
+    margin-top: 0;
+}
+ 
+.app-card__content{
+    display: block;
+    margin-bottom: 16px;
+    font-size: 14px;
+}
+ 
+.app-card__actions{
+    display: flex;
+    flex-direction: row;
+    margin-left: -8px;
+    margin-right: -8px;
+    padding: 8px 0;
+    justify-content: center;
+}
+ 
+button{
+    box-sizing: border-box;
+    position: relative;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: pointer;
+    outline: 0;
+    border: none;
+    -webkit-tap-highlight-color: transparent;
+    display: inline-block;
+    white-space: nowrap;
+    text-decoration: none;
+    vertical-align: baseline;
+    text-align: center;
+    margin-left: 5px;
+    margin-right: 5px;
+    min-width: 64px;
+    line-height: 36px;
+    padding: 0 16px;
+    border-radius: 4px;
+    overflow: visible;
+}
