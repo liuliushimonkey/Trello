@@ -5,10 +5,10 @@ and then go to the folder "Trello/server" and then launch the server (json-serve
 
 click on the index.html, normally it should work
 
-the main component is the <column-manager> element, which contains a coupld of column,
+the main component is the column-manager element, which contains a coupld of column,
 it will begin by calling the server to retrieve the data to decide how many columns, 
 and how each column should be displayed.
-each column is a <card-column> element.
+each column is a card-column element.
 
 you can click on the buttons below the column titles to delete/modify/save a column, or add new
 card to a column. save button is only enabled when the title of column is in edit mode.
