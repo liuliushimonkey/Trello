@@ -52,14 +52,14 @@ class CardComponent extends HTMLElement{
    }
 
    set title(newTitle){
-       if(this.title != newTitle){
-           this.setAttribute("cardTitle", newTitle);
+       if(this._title != newTitle){
+           this._title = newTitle;
            this.shadowRoot.querySelector('.app-card__title').innerHTML = "<p>" + newTitle + "</p>";
        }
    }  
 
    get title(){
-       return this.getAttribute("cardTitle");
+       return this._title;
    }
 
    set description(description){
