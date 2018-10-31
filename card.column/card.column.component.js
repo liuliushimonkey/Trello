@@ -10,11 +10,11 @@ class CardColumnComponent extends HTMLElement{
         shadowRoot.appendChild(instance);
  
         var deleteButton = this.shadowRoot.querySelector('.card-column__delete');
-        deleteButton.onclick = e => this.onDelete(e);
+        deleteButton.onclick = e => this.Delete(e);
         var modifyButton = this.shadowRoot.querySelector('.card-column__modify');
-        modifyButton.onclick = e => this.onModify(e);
+        modifyButton.onclick = e => this.Modify(e);
         var saveButton = this.shadowRoot.querySelector('.card-column__save');
-        saveButton.onclick = e => this.onSave(e);
+        saveButton.onclick = e => this.Save(e);
  
         var newCardButton = this.shadowRoot.querySelector('.card-column__newCard');
         newCardButton.onclick = e => this.addNewCard();
@@ -34,11 +34,11 @@ class CardColumnComponent extends HTMLElement{
     }
  
     set columnId(id){
-        this.setAttribute("columnId", id);
+        this._columnId = id;
     }
  
     get columnId(){
-        return this.getAttribute("columnId");
+        return this._columnId;
     }
  
     set cards(cards){
@@ -75,18 +75,18 @@ class CardColumnComponent extends HTMLElement{
         return this.getAttribute("columnWidth");
     }
  
-    onDelete(event){
+    Delete(event){
         event.stopPropagation();
         this.dispatchEvent(new CustomEvent("card-column-delete", {
             detail: {
-                columnId: this.columnId
+                id: this.columnId
             },
             bubbles: true,
             composed: true
         }));
     }
  
-    onModify(event){
+    Modify(event){
         if(this._modifying){
             return;
         }
@@ -105,7 +105,7 @@ class CardColumnComponent extends HTMLElement{
         event.stopPropagation();
     }
    
-    onSave(event){
+    Save(event){
         if(!this._modifying){
             return;
         }
@@ -123,7 +123,7 @@ class CardColumnComponent extends HTMLElement{
         event.stopPropagation();
         this.dispatchEvent(new CustomEvent('card-column-saved', {
             detail: {
-                columnId: this.columnId,
+                id: this.columnId,
                 title: this.title
             },
             bubbles: true,
@@ -133,7 +133,7 @@ class CardColumnComponent extends HTMLElement{
     }
  
     onCardDelete(event){
-        var cardId = event.detail.cardId;
+        var cardId = event.detail.id;
         var elementId = "card" + cardId + "_column" + this.columnId;
         var cardElement = this.shadowRoot.querySelector("#" + elementId);
         if(cardElement != undefined){
@@ -144,6 +144,17 @@ class CardColumnComponent extends HTMLElement{
     addNewCard(){
         var newId = this.getNewCardId();
         this.addCard(newId, this.columnId, "New", "New");
+        this.dispatchEvent(new CustomEvent('app-card-added', {
+            detail: {
+                id: newId,
+                title: "New",
+                description: "New",
+                columnId: this.columnId,
+            },
+            bubbles: true,
+            cancelable: false,
+            composed: true
+        }));
     }
  
     addCard(cardId, columnId, title, description){

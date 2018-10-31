@@ -12,7 +12,7 @@ class ColumnNamagerComponent extends HTMLElement{
         shadowRoot.appendChild(instance); 
 
         var addColumnButton = this.shadowRoot.querySelector('.column-manager__newColumn');
-        addColumnButton.onclick = e => this.onAddColumn(e);
+        addColumnButton.onclick = e => this.onColumnAdded(e);
 
         var filterInput = this.shadowRoot.querySelector('.column-manager__filter');
         filterInput.onkeyup = e => this.filter(e);
@@ -21,6 +21,11 @@ class ColumnNamagerComponent extends HTMLElement{
         shadowRoot.addEventListener('card-column-saved', e => {this.onColumnSaved(e);})
         shadowRoot.addEventListener('app-card-saved', e => {this.onCardSaved(e);})
         shadowRoot.addEventListener('app-card-delete', e => {this.onCardDelete(e);})
+        shadowRoot.addEventListener('app-card-added', e => {this.onCardAdded(e);})
+    }
+
+    onCardAdded(event){
+        this.trelloService.createCard(event.detail);
     }
 
     filter(event){
@@ -50,12 +55,13 @@ class ColumnNamagerComponent extends HTMLElement{
     }
 
 
-    onAddColumn(event){
+    onColumnAdded(event){
         var colData = {
             "id": this.getNewColumnId(),
             "title": "New"
         };
         this.addColumn(colData, []);
+        this.trelloService.createColumn(colData);
     }
 
     getNewColumnId(){
@@ -63,39 +69,43 @@ class ColumnNamagerComponent extends HTMLElement{
     }
 
     onColumnDelete(event){
-        var columnId = event.detail.columnId;
+        var columnId = event.detail.id;
         var colToDelete = this.shadowRoot.querySelector("#card-manager_column_" + columnId);
-        this.shadowRoot.querySelector(".column-manager__columns")
-            .removeChild(colToDelete);
+        this.shadowRoot.querySelector(".column-manager__columns").removeChild(colToDelete);
+        this.trelloService.deleteColumn(event.detail);
     }
 
     onColumnSaved(event){
         var detail = event.detail;
         var shouldCallService = true;
         this.columns.forEach(column => {
-            if(column.id != detail.columnId && column.title == detail.title){
+            if(column.id != detail.id && column.title == detail.title){
                 window.alert("Can't save column, such title already exist!");
                 shouldCallService = false;
                 return;
             }
-        })
+        });
+
+        this.trelloService.updateColumn(detail);
     }
 
     onCardSaved(event){
         var detail = event.detail;
         var shouldCallService = true;
         this.cards.forEach(card => {
-            if((card.id != detail.cardId) 
+            if((card.id != detail.id) 
             && (card.title == detail.title || card.description == detail.description)){
                 window.alert("Can't save card, card with such title or description already exist!");
                 shouldCallService = false;
                 return;
             }
-        })
+        });
+
+        this.trelloService.updateCard(detail);
     }
 
     onCardDelete(event){
-        var detail = event.detail;
+        this.trelloService.deleteCard(event.detail);
     }
 
     set columns(columns){

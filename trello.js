@@ -9,6 +9,55 @@ class TrelloService{
         return this.fetchJson(baseUrl + "/cards");
     }
 
+    updateColumn(column){
+        return this.updateByJson(baseUrl + "/columns/" + column.id, column, 'PUT');
+    }
+
+    updateCard(card){
+        return this.updateByJson(baseUrl + "/cards/" + card.id, card, 'PUT');
+    }
+
+    createColumn(column){
+        return this.updateByJson(baseUrl + "/columns", column, 'POST');
+    }
+
+    createCard(card){
+        return this.updateByJson(baseUrl + "/cards", card, 'POST');
+    }
+
+    deleteColumn(column){
+        return this.delete(baseUrl + "/columns/" + column.id);
+    }
+
+    deleteCard(card){
+        return this.delete(baseUrl + "/cards/" + card.id);
+    }
+
+    delete(url){
+        let options = {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        };
+
+        return fetch(url, options).then(response => response.json())
+        .catch(error => console.error(error));
+    }
+
+    updateByJson(url, data, method){
+        let options = {
+            method: method,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        };
+
+        return fetch(url, options).then(response => response.json())
+        .catch(error => console.error(error));
+    }
+
     fetchJson(url){
         return fetch(url).then(response => response.json())
         .catch(error => console.error(error));
@@ -19,6 +68,21 @@ trelloService = new TrelloService();
 
 document.addEventListener('DOMContentLoaded', function(event) {
     createManager();
+    // trelloService.updateCard({
+    //     "id": 2,
+    //     "title": "new title fufufufuf",
+    //     "description": "from service",
+    //     "columnId": 2
+    // });
+
+    // trelloService.updateColumn({
+    //     "id": 1,
+    //     "title": "fucking updated column title"
+    // });
+
+    // trelloService.deleteCard({
+    //     "id": 6
+    // });
 });
 
 async function createManager(){

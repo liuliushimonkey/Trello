@@ -15,11 +15,11 @@ class CardComponent extends HTMLElement{
        this.hideContent();
 
        var deleteButton = this.shadowRoot.querySelector('.app-card__delete');
-       deleteButton.onclick = e => this.onDelete(e);
+       deleteButton.onclick = e => this.Delete(e);
        var modifyButton = this.shadowRoot.querySelector('.app-card__modify');
-       modifyButton.onclick = e => this.onModify(e);
+       modifyButton.onclick = e => this.Modify(e);
        var saveButton = this.shadowRoot.querySelector('.app-card__save');
-       saveButton.onclick = e => this.onSave(e);
+       saveButton.onclick = e => this.Save(e);
    }
 
    set cardId(id){
@@ -76,18 +76,18 @@ class CardComponent extends HTMLElement{
        this.toggleContent();
    }
 
-   onDelete(event){
+   Delete(event){
        event.stopPropagation();
        this.dispatchEvent(new CustomEvent("app-card-delete", {
            detail: {
-               cardId: this.cardId
+               id: this.cardId
            },
            bubbles: true,
            composed: true
        }));
    }
 
-   onModify(event){
+   Modify(event){
        if(this._modifying){
            return;
        }
@@ -114,7 +114,7 @@ class CardComponent extends HTMLElement{
        event.stopPropagation();
    }
 
-   onSave(event){
+   Save(event){
        if(!this._modifying){
            return;
        }
@@ -136,12 +136,12 @@ class CardComponent extends HTMLElement{
        event.target.disabled = true;
        this.shadowRoot.querySelector('.app-card__modify').disabled = false;
        event.stopPropagation();
-       this.dispatchEvent(new CustomEvent('cardSaved', {
+       this.dispatchEvent(new CustomEvent('app-card-saved', {
            detail: {
-               cardId: this.cardId,
-               columnId: this.columnId,
+               id: this.cardId,
                title: this.title,
-               description: this.description
+               description: this.description,
+               columnId: this.columnId
            },
            bubbles: true,
            cancelable: false,
