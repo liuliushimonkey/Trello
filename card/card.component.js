@@ -20,22 +20,35 @@ class CardComponent extends HTMLElement{
        modifyButton.onclick = e => this.Modify(e);
        var saveButton = this.shadowRoot.querySelector('.app-card__save');
        saveButton.onclick = e => this.Save(e);
+
+       this.addEventListener("dragstart", e => {this.dragStart(e);});
+       this.draggable = true;
+   }
+
+   dragStart(event){
+    var card = event.target;
+    event.dataTransfer.setData("data", JSON.stringify({
+        "id": card.cardId,
+        "title": card.title,
+        "description": card.description,
+        "originColumnId": card.columnId
+    }));
    }
 
    set cardId(id){
-       this.setAttribute("cardId", id);
+       this._cardId = id;
    }
 
    get cardId(){
-       return this.getAttribute("cardId");
+       return this._cardId;
    }
 
    set columnId(id){
-       this.setAttribute("columnId", id);
+       this._columnId = id;
    }
 
    get columnId(){
-       return this.getAttribute("columnId");
+       return this._columnId;
    }
 
    set title(newTitle){

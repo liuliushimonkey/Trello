@@ -22,8 +22,37 @@ class ColumnNamagerComponent extends HTMLElement{
         shadowRoot.addEventListener('app-card-saved', e => {this.onCardSaved(e);})
         shadowRoot.addEventListener('app-card-delete', e => {this.onCardDelete(e);})
         shadowRoot.addEventListener('app-card-added', e => {this.onCardAdded(e);})
+        shadowRoot.addEventListener('card-drag-drop', e => {this.onCardDragDrop(e);})
     }
 
+    onCardDragDrop(event){
+        var dragDetail = event.detail;
+        var syntheticCardDelete = new CustomEvent("app-card-delete", {
+            detail: {
+                "id": dragDetail.id,
+                "title": dragDetail.title,
+                "description": dragDetail.description,
+                "columnId": dragDetail.originColumnId
+            }
+        });
+        var originColumn = this.findColumnElement(dragDetail.originColumnId);
+        originColumn.onCardDelete(syntheticCardDelete);
+        this.onCardDelete(syntheticCardDelete);
+
+        var syntheticCardAdded = new CustomEvent("app-card-added", {
+            detail: {
+                "id": dragDetail.id,
+                "title": dragDetail.title,
+                "description": dragDetail.description,
+                "columnId": dragDetail.newColumnId
+            }
+        });
+        var newColumn = this.findColumnElement(dragDetail.newColumnId);
+        newColumn.addCard(dragDetail.id, dragDetail.newColumnId, dragDetail.title, dragDetail.description);
+        this.onCardAdded(syntheticCardAdded);
+
+    }
+    
     onCardAdded(event){
         this.trelloService.createCard(event.detail);
     }
@@ -49,11 +78,15 @@ class ColumnNamagerComponent extends HTMLElement{
         })
     }
 
+
     findCardElement(cardId, columnId){
-        var columnElement = this.shadowRoot.querySelector("#card-manager_column_" + columnId);
+        var columnElement = this.findColumnElement(columnId);
         return columnElement.shadowRoot.querySelector("#card" + cardId + "_column" + columnId);
     }
 
+    findColumnElement(columnId){
+        return this.shadowRoot.querySelector("#card-manager_column_" + columnId);
+    }
 
     onColumnAdded(event){
         var colData = {

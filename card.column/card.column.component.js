@@ -20,6 +20,28 @@ class CardColumnComponent extends HTMLElement{
         newCardButton.onclick = e => this.addNewCard();
  
         shadowRoot.addEventListener('app-card-delete', e => {this.onCardDelete(e);})
+        this.addEventListener("drop", e => {this.drop(e);});
+        this.addEventListener("dragenter", e => {this.dragenter(e);});
+        this.addEventListener("dragover", e => {this.dragover(e);});
+    }
+
+    drop(event){
+        event.preventDefault();
+        var cardData = JSON.parse(event.dataTransfer.getData("data"));
+        cardData["newColumnId"] = this.columnId;
+        this.dispatchEvent(new CustomEvent("card-drag-drop", {
+            detail: cardData,
+            bubbles: true,
+            composed: true
+        }));
+    }
+
+    dragover(event){
+        event.preventDefault();
+    }
+
+    dragenter(event){
+        event.preventDefault();
     }
  
     set title(newTitle){
